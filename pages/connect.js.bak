@@ -1,0 +1,136 @@
+import Link from "next/link";
+
+import { NoWalletDetected } from "../src/components/NoWalletDetected";
+import { ConnectWallet } from "../src/components/ConnectWallet";
+import { Loading } from "../src/components/Loading";
+import React from "react";
+import React, {useEffect} from "react";
+import { ethers } from "ethers";
+import NeverFightTwiceArt from "../src/contracts/NeverFightTwice.json";
+import NFTSimpleArt from "../src/contracts/NFTSimple.json";
+
+function WallerConnect() {
+    this.initialState = {
+        // The info of the token (i.e. It's Name and symbol)
+        tokenData: undefined,
+        // The user's address and balance
+        selectedAddress: undefined,
+        balance: undefined,
+        // The ID about transactions being sent, and any possible error with them
+        txBeingSent: undefined,
+        transactionError: undefined,
+        networkError: undefined,
+    };
+
+    this.state = this.initialState;
+
+            // Ethereum wallets inject the window.ethereum object. If it hasn't been
+            // injected, we instruct the user to install MetaMask.
+            //if (window.ethereum === undefined) {
+    const isSSR = typeof window === "undefined";
+    //console.log(isSSR);
+    if ( isSSR === true) {
+        return <NoWalletDetected/>;
+    }
+
+    // The next thing we need to do, is to ask the user to connect their wallet.
+    // When the wallet gets connected, we are going to save the users's address
+    // in the component's state. So, if it hasn't been saved yet, we have
+    // to show the ConnectWallet component.
+    //
+    // Note that we pass it a callback that is going to be called when the user
+    // clicks a button. This callback just calls the _connectWallet method.
+    if (!this.state.selectedAddress) {
+        return (
+            <ConnectWallet
+                connectWallet={() => this._connectWallet()}
+                networkError={this.state.networkError}
+                dismiss={() => this._dismissNetworkError()}
+            />
+        );
+    }
+
+            // The next thing we need to do, is to ask the user to connect their wallet.
+            // When the wallet gets connected, we are going to save the users's address
+            // in the component's state. So, if it hasn't been saved yet, we have
+            // to show the ConnectWallet component.
+            //
+            // Note that we pass it a callback that is going to be called when the user
+            // clicks a button. This callback just calls the _connectWallet method.
+
+            return "Nice!";
+
+}
+
+
+/*
+async _connectWallet() {
+
+    if ( window.ethereum === undefined ) {
+        console.log("!!!");
+        return this._resetState();
+    }
+    console.log("!!!");
+    const [selectedAddress] = await window.ethereum.enable();
+
+    // First we check the network is Rinkeby
+    if (!this._checkNetwork()) {
+        return;
+    }
+
+    this._initialize(selectedAddress);
+
+    window.ethereum.on("accountsChanged", ([newAddress]) => {
+        this._stopPollingData();
+
+        if (newAddress === undefined) {
+            return this._resetState();
+        }
+
+        this._initialize(newAddress);
+    });
+
+    window.ethereum.on("networkChanged", ([networkId]) => {
+        this._stopPollingData();
+        this._resetState();
+    });
+}
+
+async _initialize(userAddress) {
+
+    this.setState({
+        selectedAddress: userAddress,
+        requestIdUsed: []
+    });
+
+    this._intializeEthers();
+    this._getTokenData();
+    this._startPollingData();
+
+    fetch("https://api.imgflip.com/get_memes")
+        .then(response => response.json())
+        .then(response => {
+            const { memes } = response.data
+            this.setState({ allMemeImgs: memes, _popup: false })
+            // console.log(memes)
+        })
+
+}
+
+async _intializeEthers() {
+    // We first initialize ethers by creating a provider using window.ethereum
+    this._provider = new ethers.providers.Web3Provider(window.ethereum);
+    // this.web3 = new Web3(this._provider);
+
+    this.neverFightTwice = new ethers.Contract(NeverFightTwiceAddr,NeverFightTwiceArt.abi,this._provider.getSigner(0));
+    this.nftSimple = new ethers.Contract(NFTSimpleAddr,NFTSimpleArt.abi,this._provider.getSigner(0));
+}
+handleChangeRequestIdUsed(index) {
+    this.setState(prev => ({
+        requestIdUsed: prev.requestIdUsed.map((val, i) => !val && i === index ? true : val)
+    }))
+}
+*/
+
+
+export default WallerConnect;

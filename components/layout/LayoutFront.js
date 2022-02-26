@@ -15,16 +15,19 @@ const LayoutFront = ({
     pageClass,
     parent,
     child,
+    setWallet
 }) => {
     const [height, setHeight] = useState();
     useEffect(() => {
         setHeight(window.screen.height);
+        console.log('layoutFront!!!!!!!!!!!!!');
+        //setWallet();
     }, []);
     return (
         <>
             <PageHead headTitle={headTitle} />
             <div id="main-wrapper" className={pageClass}>
-                <HeaderLanding />
+                <HeaderLanding setWallet={setWallet}/>
 
                     {pageTitle && (
                         <PageTitleLanding

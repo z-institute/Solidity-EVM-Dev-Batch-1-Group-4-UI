@@ -23,10 +23,23 @@ import "bootstrap/dist/css/bootstrap.css";
 
 
 const Index = () => {
-    const [isOpen, setOpen] = useState(false);
+    const [Open, setOpen] = useState(false);
+    const [IsWalletReady, setIsWalletReady] = useState(false);
+    //console.log("IsWalletReady: " , IsWalletReady);
+
+    const setWalletReady = () => {
+        console.log('setWalletReadyBefore!!!!!!!!');
+        console.log('IsWalletReady: ', IsWalletReady);
+        setIsWalletReady(true);
+        console.log('setWalletReadyAfter!!!!!!!!');
+        console.log('IsWalletReady: ', IsWalletReady);
+
+    }
+
     return (
         <>
-            <LayoutFront pageClass={"front"}>
+
+            <LayoutFront pageClass={"front"} setWallet={setWalletReady}>
                 <div className="intro1">
                     <div className="container">
                         <div className="row justify-content-between align-items-center">
@@ -63,6 +76,7 @@ const Index = () => {
 
                 </div>
                 <div className="col-6 p-4 text-center"></div>
+                <div>1: {IsWalletReady}</div>
                 <Dapp />
                 <div className="top-collection section-padding">
                     <div className="container">

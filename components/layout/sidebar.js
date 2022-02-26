@@ -20,50 +20,7 @@ function Sidebar() {
                 </div>
                 <div className="menu">
                     <ul>
-                        <li className={router.pathname == "/dashboard" ? "active" : ""}>
-                            <Link href="/dashboard">
-                                <a>
-                                    <span>
-                                        <i className="ri-layout-grid-fill"></i>
-                                    </span>
-                                    <span className="nav-text">Dashboard</span>
-                                </a>
-                            </Link>
-                        </li>
-                        <li className={router.pathname == "/bids" ? "active" : ""}>
-                            <Link href="/bids">
-                                <a>
-                                    <span>
-                                        <i className="ri-briefcase-line"></i>
-                                    </span>
-                                    <span className="nav-text">Bids</span>
-                                </a>
-                            </Link>
-                        </li>
-                        <li className={router.pathname == "/saved" ? "active" : ""}>
-                            <Link href="/saved">
-                                <a>
-                                    <span>
-                                        <i className="ri-heart-line"></i>
-                                    </span>
-                                    <span className="nav-text">Saved</span>
-                                </a>
-                            </Link>
-                        </li>
-                        {/* <li
-                            className={
-                                router.pathname == "/collection" ? "active" : ""
-                            }
-                        >
-                            <Link href="/collection">
-                                <a>
-                                    <span>
-                                        <i className="ri-star-line"></i>
-                                    </span>
-                                    <span className="nav-text">Collection</span>
-                                </a>
-                            </Link>
-                        </li> */}
+
                         <li
                             className={
                                 router.pathname == "/wallet" ? "active" : ""
@@ -78,27 +35,8 @@ function Sidebar() {
                                 </a>
                             </Link>
                         </li>
-                        {/* <li
-                            className={
-                                router.pathname == "/profile" ? "active" : ""
-                            }
-                        >
-                            <Link href="/profile">
-                                <a>
-                                    <span>
-                                    <i className="ri-account-box-line"></i>
-                                    </span>
-                                    <span className="nav-text">Profile</span>
-                                </a>
-                            </Link>
-                        </li> */}
-                        <li
-                            className={
-                                router.pathname == "/settings"
-                                    ? "active"
-                                    : ""
-                            }
-                        >
+
+                        <li>
                             <Link href="/settings">
                                 <a>
                                     <span>
@@ -108,22 +46,7 @@ function Sidebar() {
                                 </a>
                             </Link>
                         </li>
-                        <li
-                            className={
-                                router.pathname == "/signin"
-                                    ? "active"
-                                    : " logout"
-                            }
-                        >
-                            <Link href="/signin">
-                                <a>
-                                    <span>
-                                        <i className="ri-logout-circle-line"></i>
-                                    </span>
-                                    <span className="nav-text">Signout</span>
-                                </a>
-                            </Link>
-                        </li>
+
                     </ul>
                 </div>
 

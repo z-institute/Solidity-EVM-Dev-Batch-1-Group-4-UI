@@ -24,17 +24,7 @@ function Header() {
                                             </a>
                                         </Link>
                                     </div>
-                                    <div className="search">
-                                        <form action="#">
-                                            <span>
-                                                <i className="ri-search-line"></i>
-                                            </span>
-                                            <input
-                                                type="text"
-                                                placeholder="Search Here"
-                                            />
-                                        </form>
-                                    </div>
+
                                 </div>
 
                                 <div className="header-right">

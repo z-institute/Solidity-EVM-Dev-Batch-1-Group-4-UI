@@ -61,8 +61,15 @@ export class WalletShow extends React.Component {
         this.state = this.initialState;
     }
 
+    click = () => {
+        console.log('walleshow123!!!!!!!!!!!!!');
+        //this.props.setWallet();
+    }
 
-    render(){
+
+render(){
+
+
         // Ethereum wallets inject the window.ethereum object. If it hasn't been
         // injected, we instruct the user to install MetaMask.
         //if (window.ethereum === undefined) {
@@ -116,9 +123,12 @@ export class WalletShow extends React.Component {
             console.log("NFTs:" + this.state.NFTs);
             console.log("NFTs_NeverFightTwice:" + this.state.NFTs_NeverFightTwice);
             return <Loading />;
+        }else{
+            //this.click();
+            this.props.setWallet();
         }
 
-
+        //console.log("xxIsWalletReady: " , props.IsWalletReady);
         const wallet_addr = this.state.selectedAddress.substring(0, 6) + ".." + this.state.selectedAddress.substring(38);
         return (
             <div className="btn btn-primary">{wallet_addr}</div>

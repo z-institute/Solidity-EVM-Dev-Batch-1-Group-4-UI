@@ -4,12 +4,19 @@ import Link from "next/link";
 const ThemeSwitch = dynamic(() => import('../../components/elements/ThemeSwitch'), {
     ssr: false
 })
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import WalletShow from '../../components/elements/WalletShow';
 
-function HeaderLanding() {
+function HeaderLanding(props) {
     const [isToggled, setToggled] = useState(false);
     const toggleTrueFalse = () => setToggled(!isToggled);
+
+    useEffect(() => {
+        console.log('HeaderLanding!!!!!!!!!!!!!');
+       // props.setWallet();
+    }, []);
+
+
     return (
         <>
             <div className="header landing">
@@ -44,14 +51,14 @@ function HeaderLanding() {
                                                 </div>
                                             </li> */}
                                             <li className="nav-item">
-                                                <Link href="/dashboard"><a className="nav-link">Dashboard</a></Link>
+                                                <Link href="/settings"><a className="nav-link">settings</a></Link>
                                             </li>
 
                                         </ul>
                                     </div>
                                     <div className="signin-btn d-flex align-items-center">
                                         {/*<Link href="/connect"><a className="btn btn-primary">Connect</a></Link>*/}
-                                        <WalletShow/>
+                                        <WalletShow setWallet={props.setWallet}></WalletShow>
                                     </div>
                                 </nav>
                             </div>

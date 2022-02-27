@@ -107,7 +107,7 @@ function SettingsProfile() {
             setState({ txBeingSent: undefined });
         }
     }
-    async function _mint_createZNtoken(asset, token, date, type) {
+    async function _mint_createZNtoken(asset, token, date, optype) {
         try {
             console.log("1!!");
             const [ethSelectedAddress] = await window.ethereum.enable();
@@ -122,10 +122,10 @@ function SettingsProfile() {
             const zopnftFactory = new ethers.Contract(ZOPNFTFactoryAddr,ZOPNFTFactoryIF.abi,provider.getSigner(0));
             console.log("5!!: ", zopnftFactory);
             //let tx = await zopnftFactory.createZNtoken('azuki', 'eth', 20220227, 0)
-            let tx = await zopnftFactory.createZNtoken(asset, token, date, type)
+            let tx = await zopnftFactory.createZNtoken(asset, token, date, optype)
             //console.log("6");
             //console.log("transaction sent to mint _mint_createZNtoken ", 'azuki', 'eth', 20220227, 0);
-            console.log("transaction sent to mint _mint_createZNtoken ", asset, token, date, type);
+            console.log("transaction sent to mint _mint_createZNtoken ", asset, token, date, optype);
             setState({ txBeingSent: tx.hash });
             console.log("[createZNtoken] tx.hash: ", tx.hash)
             let receipt = await tx.wait()
@@ -160,7 +160,7 @@ function SettingsProfile() {
         }
     }
 
-    async function _mint_buyOP(date, price, amount) {
+    async function _mint_buyOP(date, optype, price, amount) {
         try {
             console.log("1!!");
             const [ethSelectedAddress] = await window.ethereum.enable();
@@ -174,19 +174,19 @@ function SettingsProfile() {
             // this.web3 = new Web3(this._provider);
             const zopnftFactory = new ethers.Contract(ZOPNFTFactoryAddr,ZOPNFTFactoryIF.abi,provider.getSigner(0));
             console.log("5!!: ", zopnftFactory);
-            //let tx = await zopnftFactory.buyOP(20220227, 121, ethSelectedAddress, 5);
+            //let tx = await zopnftFactory.buyOP(20220227, 0, 121, ethSelectedAddress, 5);
             //let options_token_addr = await zopnftFactory.expiryToZNtoken(20220227, 121);
-            //console.log("ZNtoken-20220227-121 addr: ", options_token_addr);
+            //console.log("ZNtoken-0-20220227-121 addr: ", options_token_addr);
 
-            let tx = await zopnftFactory.buyOP(date, price, ethSelectedAddress, amount);
-            let options_token_addr = await zopnftFactory.expiryToZNtoken(date, price);
-            console.log("ZNtoken-",date, "-",price," addr: ", options_token_addr);
+            let tx = await zopnftFactory.buyOP(date, optype, price, ethSelectedAddress, amount);
+            let options_token_addr = await zopnftFactory.expiryToZNtoken(date, optype, price);
+            console.log("ZNtoken-",date, "-", optype,"-",price," addr: ", options_token_addr);
 
 
             //let tx = await zopnftFactory.buyOP(date, price, amount)
             //console.log("6");
             //console.log("transaction sent to mint buyOP: ", 20220227, 121, ethSelectedAddress, 5);
-            console.log("transaction sent to mint buyOP: ", date, price, amount);
+            console.log("transaction sent to mint buyOP: ", date, optype, price, amount);
             setState({ txBeingSent: tx.hash });
             console.log("[buyOP] tx.hash: ", tx.hash)
             let receipt = await tx.wait()
@@ -360,11 +360,12 @@ function SettingsProfile() {
                                                     event.preventDefault();
                                                     const formData = new FormData(event.target);
                                                     const date = formData.get("date");
+                                                    const optype = formData.get("optype");
                                                     const price = formData.get("price");
                                                     const amount = formData.get("amount");
                                                     //date, price, amount
-                                                    if (date || price || amount) {
-                                                        _mint_buyOP(date, price, amount);
+                                                    if (date || optype || price || amount) {
+                                                        _mint_buyOP(date, optype, price, amount);
                                                     }
                                                 }}
                                             >
@@ -376,6 +377,15 @@ function SettingsProfile() {
                                                         step="1"
                                                         name="date"
                                                         placeholder="1"
+                                                        required
+                                                    />
+                                                    <label>Options Type (Buy:0/Put:1)</label>
+                                                    <input
+                                                        className="col-12 mb-3 form-control"
+                                                        type="number"
+                                                        step="1"
+                                                        name="optype"
+                                                        placeholder="0"
                                                         required
                                                     />
                                                     <label>Price</label>

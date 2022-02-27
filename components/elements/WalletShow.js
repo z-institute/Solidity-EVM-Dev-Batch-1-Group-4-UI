@@ -367,6 +367,11 @@ render(){
         return NFTs_NeverFightTwice;
     }
 
+    _stopPollingData() {
+        clearInterval(this._pollDataInterval);
+        this._pollDataInterval = undefined;
+    }
+
 }
 
 

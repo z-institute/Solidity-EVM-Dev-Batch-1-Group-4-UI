@@ -76,7 +76,6 @@ const Index = () => {
 
                 </div>
                 <div className="col-6 p-4 text-center"></div>
-                <div>1: {IsWalletReady}</div>
                 <Dapp />
                 <div className="top-collection section-padding">
                     <div className="container">

@@ -660,7 +660,7 @@ export class Dapp extends React.Component {
     try {
       this._dismissTransactionError();
 
-      let tx = await this.zopnftFactory.createZNtoken(20220227, 111)
+      let tx = await this.zopnftFactory.updatePrice(20220227, 111)
       console.log("transaction sent to mint _mint_updatePrice ", 20220227, 111);
       this.setState({ txBeingSent: tx.hash });
       console.log("[updatePrice] tx.hash: ", tx.hash)

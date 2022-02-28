@@ -21,15 +21,12 @@ function TopCollection_put() {
     const [open, setOpen] = useState("p1");
     
     const fetchProducts = async (callPriceArry, putPriceArry) => {
-        console.log("[TOP]:  2!!:", ZOPNFTFactoryAddr);
-
+        
         const provider = new ethers.providers.Web3Provider(window.ethereum);
-        console.log("[TOP]:  4!!: ", provider);
-        // this.web3 = new Web3(this._provider);
+        
         const zopnftFactory = new ethers.Contract(ZOPNFTFactoryAddr, ZOPNFTFactoryIF.abi, provider.getSigner(0));
-        //console.log("[TOP]:  5!!: ", zopnftFactory);
+        
         const avgPrice = (await zopnftFactory.expiryDayToPrice(todayDate)).toString(10);
-        console.log("\navgPrice:", avgPrice);
     
         const getStrikePricesResult = await zopnftFactory.getStrikePrices(avgPrice, range, base);
         var strikePrices = getStrikePricesResult.strikePrices;

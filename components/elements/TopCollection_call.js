@@ -14,12 +14,11 @@ let underlyingAsset = "azuki";
 const ZOPNFTFactoryAddr = contractAddress.ZOPNFTFactory;
 
 let isPut = true;
-let options = [];
+let zoptions = [];
 
 
-function TopCollection_put() {
+function TopCollection_call() {
     const [open, setOpen] = useState("p1");
-    
     const fetchProducts = async (callPriceArry, putPriceArry) => {
         console.log("[TOP]:  2!!:", ZOPNFTFactoryAddr);
 
@@ -47,9 +46,9 @@ function TopCollection_put() {
             singleOption["expiryday"] = todayDate;
             singleOption["strikePrice"] = strikePrice/10;
             singleOption["buyPrice"] = buyPrice;
-            options.push(singleOption);
+            zoptions.push(singleOption);
         }
-        console.log("####options.length: ", options.length);
+        console.log("####options.length: ", zoptions.length);
     }
 
     useEffect(() => {
@@ -57,14 +56,14 @@ function TopCollection_put() {
     }, []);
 
     return (
-        <>  
-            {options.map((item, i) => ( 
+        <>
+            {zoptions.map((item, i) => (
                 <form className="buyOP">
-                    <div className="col-xl-12 col-sm-12 col-md-12">
+                <div className="col-xl-12 col-sm-12 col-md-12">
                         <div className="top-collection-content d-block">
                             <div className="d-flex align-items-center">
-                                <span className="serial">{underlyingAsset} </span>
-                                <span>Put-{item.strikePrice} </span>
+                                <span className="serial">{underlyingAsset}</span>
+                                <span>Call-{item.strikePrice} </span>
                                 <div className="flex-grow-1 ms-3">
                                     <p className="text-muted">
                                         <img src="/images/svg/eth.svg" alt="" width={10} className="me-2" />
@@ -72,7 +71,6 @@ function TopCollection_put() {
                                     </p>
                                 </div>
                                 <span>expiryday {item.expiryday} </span>
-
                                 <div class="col-sm-4 col-sm-offset-4">
                                 <label for="basic-url" class="form-label">amount</label>
                                     <div class="input-group mb-3">
@@ -84,10 +82,10 @@ function TopCollection_put() {
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </form>   
+                </div>
+                </form>
             ))}
         </>
     );
 }
-export default TopCollection_put;
+export default TopCollection_call;

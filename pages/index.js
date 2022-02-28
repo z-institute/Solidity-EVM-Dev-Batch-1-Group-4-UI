@@ -93,14 +93,13 @@ const Index = () => {
                     </div>    
                     <div className="container-column2">    
                         <div className="align-items-center row">
-                            <TopCollection />
+                            <TopCollection_call />
                         </div>
                         <div className="align-items-center row">
                             <TopCollection_put />
                         </div>
                     </div>
                 </div>
-
             </LayoutFront>
         </>
     );

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import BrowseCategory from "../components/elements/BrowseCategory";
-import TopCollection from "../components/elements/TopCollection";
+import TopCollection_call from "../components/elements/TopCollection_call";
 import TopCollection_put from "../components/elements/TopCollection_put";
 import LayoutFront from "../components/layout/LayoutFront";
 import "react-modal-video/css/modal-video.css";

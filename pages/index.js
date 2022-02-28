@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import BrowseCategory from "../components/elements/BrowseCategory";
 import TopCollection from "../components/elements/TopCollection";
+import TopCollection_put from "../components/elements/TopCollection_put";
 import LayoutFront from "../components/layout/LayoutFront";
 import "react-modal-video/css/modal-video.css";
 import dynamic from "next/dynamic";
@@ -89,8 +90,13 @@ const Index = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="row align-items-center">
+                    </div>    
+                    <div className="container-column2">    
+                        <div className="align-items-center row">
                             <TopCollection />
+                        </div>
+                        <div className="align-items-center row">
+                            <TopCollection_put />
                         </div>
                     </div>
                 </div>

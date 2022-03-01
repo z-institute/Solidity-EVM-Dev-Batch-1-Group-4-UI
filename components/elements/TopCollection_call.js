@@ -57,8 +57,9 @@ function TopCollection_call() {
             const strikePrice = (strikePrices[i]).toString(10);
             // console.log("strikePriceCall: ", strikePrice);
 
-            const buyPrice = (await zopnftFactory.getBuyPrice(isPut, avgPrice, strikePrice, base) / 10).toString(10);
-            // console.log("buyPrice: ", buyPrice);
+            const buyPrice = (await zopnftFactory.getBuyPrice(isPut, avgPrice, strikePrice, base) / 10);
+            //const buyPrice_str = buyPrice.toString(10);
+            //console.log("buyPrice_str: ", buyPrice_str);
 
             singleOption["expiryday"] = todayDate;
             singleOption["strikePrice"] = strikePrice/10;

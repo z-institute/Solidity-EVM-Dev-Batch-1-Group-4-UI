@@ -37,7 +37,7 @@ function Balance({ investmentData }) {
         const zopnftFactory = new ethers.Contract(ZOPNFTFactoryAddr, ZOPNFTFactoryIF.abi, provider.getSigner(0));
         //console.log("[TOP]:  5!!: ", zopnftFactory);
 
-        const avgPrice = await zopnftFactory.expiryDayToPrice(day);
+        const avgPrice = (await zopnftFactory.expiryDayToPrice(day)).toString(10);
         const avgPrice_real = (avgPrice / 10).toString(10);
         console.log("\navgPrice:", avgPrice);
         console.log("\navgPrice_real:", avgPrice_real);

@@ -6,8 +6,6 @@ import contractAddress from "../../src/contracts/contract-address.json";
 // This is an error code that indicates that the user canceled a transaction
 const ERROR_CODE_TX_REJECTED_BY_USER = 4001;
 
-
-
 let today = new Date();
 // let todayDate = today.toISOString().split('T')[0].replace("-","");
 let todayDate = 20220228;
@@ -17,10 +15,9 @@ let base = 10; // from .env file
 let underlyingAsset = "azuki";
 const ZOPNFTFactoryAddr = contractAddress.ZOPNFTFactory;
 
-let isPut = false;
+let isPut = true;
 let options = [];
 let BasePrice = 0;
-
 
 function TopCollection_put() {
     const [open, setOpen] = useState("p1");
@@ -76,7 +73,7 @@ function TopCollection_put() {
     }, []);
 
 
-    async function _mint_buyOP(amount, price) {
+    async function _mint_buyOP(amount, price, buyPrice) {
         try {
             
             const [ethSelectedAddress] = await window.ethereum.enable();
@@ -88,7 +85,7 @@ function TopCollection_put() {
             const zopnftFactory = new ethers.Contract(ZOPNFTFactoryAddr,ZOPNFTFactoryIF.abi,provider.getSigner(0));
             
             console.log("!!!!!!!!!!!!ZNtoken-",todayDate, "-", isPut,"-", price," addr: ", ethSelectedAddress, "amount:", amount);
-            let tx = await zopnftFactory.buyOP(todayDate, isPut, price, ethSelectedAddress, amount);
+            let tx = await zopnftFactory.buyOP(todayDate, isPut, price, ethSelectedAddress, amount, {value: ethers.utils.parseEther((buyPrice*amount*0.01).toString(10))});
             //let tx = await zopnftFactory.buyOP(20220228, isPut, 120, ethSelectedAddress, amount);
             
             let options_token_addr = await zopnftFactory.expiryToZNtoken(todayDate, isPut, price);
@@ -124,7 +121,7 @@ function TopCollection_put() {
                         const amount = formData.get("amount");
                         const price = formData.get("strikePrice");
                         if (amount) {
-                            _mint_buyOP(amount, price);
+                            _mint_buyOP(amount, price, item.buyPrice);
                         }
                     }}
                     className="buyOP">

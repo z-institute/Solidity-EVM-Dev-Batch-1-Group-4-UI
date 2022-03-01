@@ -15,7 +15,7 @@ let base = 10; // from .env file
 let underlyingAsset = "azuki";
 const ZOPNFTFactoryAddr = contractAddress.ZOPNFTFactory;
 
-let isPut = true;
+let isPut = false;
 let zoptions = [];
 let BasePrice = 0;
 
@@ -72,7 +72,7 @@ function TopCollection_call() {
         fetchProducts();
     }, []);
 
-    async function _mint_buyOP(amount, price) {
+    async function _mint_buyOP(amount, price, buyPrice) {
         try {
             
             const [ethSelectedAddress] = await window.ethereum.enable();
@@ -82,8 +82,7 @@ function TopCollection_call() {
             const zopnftFactory = new ethers.Contract(ZOPNFTFactoryAddr,ZOPNFTFactoryIF.abi,provider.getSigner(0));
 
             console.log("!!!!!!!!!!!!ZNtoken-",todayDate, "-", isPut,"-", price," addr: ", ethSelectedAddress, "amount:", amount);
-            let tx = await zopnftFactory.buyOP(todayDate, isPut, price, ethSelectedAddress, amount);
-            //let tx = await zopnftFactory.buyOP(20220228, isPut, 120, ethSelectedAddress, amount);
+            let tx = await zopnftFactory.buyOP(todayDate, isPut, price, ethSelectedAddress, amount, {value: ethers.utils.parseEther((buyPrice*amount*0.01).toString(10))});
             
             let options_token_addr = await zopnftFactory.expiryToZNtoken(todayDate, isPut, price);
             console.log("ZNtoken-",todayDate, "-", isPut,"-",price," addr: ", options_token_addr);
@@ -117,7 +116,7 @@ function TopCollection_call() {
                         const amount = formData.get("amount");
                         const price = formData.get("strikePrice");
                         if (amount) {
-                            _mint_buyOP(amount, price);
+                            _mint_buyOP(amount, price, item.buyPrice);
                         }
                     }}
                 >

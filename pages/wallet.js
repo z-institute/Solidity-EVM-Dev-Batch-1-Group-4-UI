@@ -50,7 +50,6 @@ function Balance({ investmentData }) {
         var exriryDay = day + 2;
         for (let i = 0; i < getStrikePricesResult.index; i++) {
 
-            var singleTransaction = {};
             //CALL
             const tokenAddressCall = await zopnftFactory.getTokenAddress(exriryDay, isCall, strikePrices[i]);
             const tokenContractCall = new ethers.Contract(tokenAddressCall, TokenAbi.abi, provider.getSigner(0));
@@ -60,15 +59,18 @@ function Balance({ investmentData }) {
 
             let strikePrices_str = (strikePrices[i] / 10).toString(10);
             if (balanceCall > 0) {
+                var singleCall= {};
                 let balanceCall_str = balanceCall.toString(10);
-                console.log(nameCall);
-                console.log("tokenAddress:%s,isCall,strikePrice:%s,balance:%s", tokenAddressCall, strikePrices_str, balanceCall_str);
-                singleTransaction["opName"] = nameCall;
-                singleTransaction["opAmount"] = balanceCall_str;
-                singleTransaction["opStrikePrice"] = strikePrices_str;
-                singleTransaction["opType"] = "Call";
-                singleTransaction["opAddress"] = tokenAddressCall;
-                tansactionHistory.push(singleTransaction);
+                // console.log("#nameCall: ", nameCall);
+                // console.log("tokenAddress:%s,isCall,strikePrice:%s,balance:%s", tokenAddressCall, strikePrices_str, balanceCall_str);
+                singleCall["opName"] = nameCall;
+                singleCall["opAmount"] = balanceCall_str;
+                singleCall["opStrikePrice"] = strikePrices_str;
+                singleCall["opType"] = "Call";
+                singleCall["opAddress"] = tokenAddressCall;
+                tansactionHistory.push(singleCall);
+                // console.log("####", singleCall.opAmount);
+                // console.log("####", singleCall.opAddress);
             }
             //PUT
             const tokenAddressPut = await zopnftFactory.getTokenAddress(exriryDay, isPut, strikePrices[i]);
@@ -76,19 +78,28 @@ function Balance({ investmentData }) {
             const balancePut = await tokenContractPut.balanceOf(ethSelectedAddress);
             const namePut = await tokenContractPut.name();
             if (balancePut > 0) {
+                var singlePut = {};
                 let balancePut_str = balancePut.toString(10);
-                console.log(namePut);
-                console.log("tokenAddressPut:%s,isPut,strikePrice:%s,balance:%s", tokenAddressPut, strikePrices_str, balancePut_str);
+                // console.log("#namePut: ", namePut);
+                // console.log("tokenAddressPut:%s,isPut,strikePrice:%s,balance:%s", tokenAddressPut, strikePrices_str, balancePut_str);
                 
-                singleTransaction["opName"] = nameCall;
-                singleTransaction["opAmount"] = balancePut_str;
-                singleTransaction["opStrikePrice"] = strikePrices_str;
-                singleTransaction["opType"] = "Put";
-                singleTransaction["opAddress"] = tokenAddressPut;
-                tansactionHistory.push(singleTransaction);
+                singlePut["opName"] = namePut;
+                singlePut["opAmount"] = balancePut_str;
+                singlePut["opStrikePrice"] = strikePrices_str;
+                singlePut["opType"] = "Put";
+                singlePut["opAddress"] = tokenAddressPut;
+                tansactionHistory.push(singlePut);
+
+                // console.log("####", singlePut.opAmount);
+                // console.log("####", singlePut.opAddress);
             }
+            
         }
-        console.log("end");
+        console.log("end", tansactionHistory.length);
+
+        for(let j =0; j<tansactionHistory.length ; j++){
+            console.log(tansactionHistory[j]);
+        }
     };
 
     useEffect(() => {
@@ -120,12 +131,14 @@ function Balance({ investmentData }) {
                                         <img src="/images/items/item_1.png" alt="" width="60" />
                                     </div>
                                     <div className="top-creators-info">
-                                        <h5 className="mb-0">{item.opName} {item.opStrikePrice}</h5>
-                                        <p className="mb-2">{item.opAddress}</p>
+                                        {/* <h5 className="mb-0">{item.opName} {item.opStrikePrice}</h5>
+                                        <p className="mb-2">{item.opAddress}</p> */}
+                                        {i}
                                     </div>
                                 </div>
                                 <div className="text-end">
-                                    <h5 className="text-primary">{item.opAmount} Unit</h5>
+                                    {/* <h5 className="text-primary">"{item.opAmount}" Unit</h5> */}
+                                    <h5 className="text-primary"> Unit</h5>
                                 </div>
                             </div>
                             ))}

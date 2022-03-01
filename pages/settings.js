@@ -110,6 +110,13 @@ function SettingsProfile() {
     async function _mint_createZNtoken(asset, token, date, optype) {
         try {
             console.log("1!!");
+            let call_put_type;
+            if (optype == 0){
+                call_put_type = true;
+            }else{
+                call_put_type = false;
+            }
+
             const [ethSelectedAddress] = await window.ethereum.enable();
             console.log("2!!:", ethSelectedAddress);
             //this.setselectedAddress(ethSelectedAddress);
@@ -122,10 +129,10 @@ function SettingsProfile() {
             const zopnftFactory = new ethers.Contract(ZOPNFTFactoryAddr,ZOPNFTFactoryIF.abi,provider.getSigner(0));
             console.log("5!!: ", zopnftFactory);
             //let tx = await zopnftFactory.createZNtoken('azuki', 'eth', 20220227, 0)
-            let tx = await zopnftFactory.createZNtoken(asset, token, date, optype)
+            let tx = await zopnftFactory.createZNtoken(asset, token, date, call_put_type)
             //console.log("6");
             //console.log("transaction sent to mint _mint_createZNtoken ", 'azuki', 'eth', 20220227, 0);
-            console.log("transaction sent to mint _mint_createZNtoken ", asset, token, date, optype);
+            console.log("transaction sent to mint _mint_createZNtoken ", asset, token, date, call_put_type);
             setState({ txBeingSent: tx.hash });
             console.log("[createZNtoken] tx.hash: ", tx.hash)
             let receipt = await tx.wait()
@@ -162,6 +169,12 @@ function SettingsProfile() {
 
     async function _mint_buyOP(date, optype, price, amount) {
         try {
+            let call_put_type;
+            if (optype == 0){
+                call_put_type = true;
+            }else{
+                call_put_type = false;
+            }
             console.log("1!!");
             const [ethSelectedAddress] = await window.ethereum.enable();
             console.log("2!!:", ethSelectedAddress);
@@ -178,15 +191,15 @@ function SettingsProfile() {
             //let options_token_addr = await zopnftFactory.expiryToZNtoken(20220227, 121);
             //console.log("ZNtoken-0-20220227-121 addr: ", options_token_addr);
 
-            let tx = await zopnftFactory.buyOP(date, optype, price, ethSelectedAddress, amount);
-            let options_token_addr = await zopnftFactory.expiryToZNtoken(date, optype, price);
-            console.log("ZNtoken-",date, "-", optype,"-",price," addr: ", options_token_addr);
+            let tx = await zopnftFactory.buyOP(date, call_put_type, price, ethSelectedAddress, amount);
+            let options_token_addr = await zopnftFactory.expiryToZNtoken(date, call_put_type, price);
+            console.log("ZNtoken-",date, "-", call_put_type,"-",price," addr: ", options_token_addr);
 
 
             //let tx = await zopnftFactory.buyOP(date, price, amount)
             //console.log("6");
             //console.log("transaction sent to mint buyOP: ", 20220227, 121, ethSelectedAddress, 5);
-            console.log("transaction sent to mint buyOP: ", date, optype, price, amount);
+            console.log("transaction sent to mint buyOP: ", date, call_put_type, price, amount);
             setState({ txBeingSent: tx.hash });
             console.log("[buyOP] tx.hash: ", tx.hash)
             let receipt = await tx.wait()

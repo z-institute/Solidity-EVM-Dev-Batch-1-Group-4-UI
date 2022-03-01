@@ -4,56 +4,30 @@ import { ethers } from "ethers";
 import ZOPNFTFactoryIF from "../../src/contracts/ZOPNFTFactory.json";
 import contractAddress from "../../src/contracts/contract-address.json";
 
+// This is an error code that indicates that the user canceled a transaction
+const ERROR_CODE_TX_REJECTED_BY_USER = 4001;
+
+
 
 let today = new Date();
 // let todayDate = today.toISOString().split('T')[0].replace("-","");
-const todayDate = 20220226;
-const range = 2; // from .env file
-const base = 10; // from .env file
-const underlyingAsset = "azuki";
+let todayDate = 20220228;
+let priceDate = todayDate-2;
+let range = 6; // from .env file
+let base = 10; // from .env file
+let underlyingAsset = "azuki";
 const ZOPNFTFactoryAddr = contractAddress.ZOPNFTFactory;
-const ERROR_CODE_TX_REJECTED_BY_USER = 4001;
-const isPut = false;
+
+let isPut = true;
 let zoptions = [];
+let BasePrice = 0;
+
+
+
 
 
 function TopCollection_call() {
     const [open, setOpen] = useState("p1");
-    const fetchProducts = async (callPriceArry, putPriceArry) => {
-        // console.log("[TOP]:  2!!:", ZOPNFTFactoryAddr);
-
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        // console.log("[TOP]:  4!!: ", provider);
-        // this.web3 = new Web3(this._provider);
-        const zopnftFactory = new ethers.Contract(ZOPNFTFactoryAddr, ZOPNFTFactoryIF.abi, provider.getSigner(0));
-        //console.log("[TOP]:  5!!: ", zopnftFactory);
-        const avgPrice = (await zopnftFactory.expiryDayToPrice(todayDate)).toString(10);
-        // console.log("\navgPrice:", avgPrice);
-    
-        const getStrikePricesResult = await zopnftFactory.getStrikePrices(avgPrice, range, base);
-        var strikePrices = getStrikePricesResult.strikePrices;
-    
-    
-        for (let i = 0; i < getStrikePricesResult.index; i++) {
-            var singleOption ={};
-
-            const strikePrice = (strikePrices[i]).toString(10);
-            console.log("strikePrice: ", strikePrice);
-
-            const buyPrice = (await zopnftFactory.getBuyPrice(isPut, avgPrice, strikePrice, base) / 10).toString(10);
-            console.log("buyPrice: ", buyPrice);
-            
-            singleOption["expiryday"] = todayDate;
-            singleOption["strikePrice"] = strikePrice/10;
-            singleOption["buyPrice"] = buyPrice;
-            zoptions.push(singleOption);
-        }
-        // console.log("####call options.length: ", zoptions.length);
-    }
-
-    useEffect(() => {
-        fetchProducts();
-    }, []);
 
     const initialState = {
         // The info of the token (i.e. It's Name and symbol)
@@ -68,34 +42,77 @@ function TopCollection_call() {
     };
 
     const [State, setState] = useState(initialState);
+    //setselectedAddress('0x1');
+    //console.log("selectedAddress: ", selectedAddress);
 
-    async function _mint_buyOP(date, optype, price, amount) {
+
+    const fetchProducts = async () => {
+        // console.log("[TOP]:  2!!:", ZOPNFTFactoryAddr);
+
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        // console.log("[TOP]:  4!!: ", provider);
+        // this.web3 = new Web3(this._provider);
+        const zopnftFactory = new ethers.Contract(ZOPNFTFactoryAddr, ZOPNFTFactoryIF.abi, provider.getSigner(0));
+        //console.log("[TOP]:  5!!: ", zopnftFactory);
+        const avgPrice = (await zopnftFactory.expiryDayToPrice(priceDate)).toString(10);
+        BasePrice = avgPrice;
+        console.log("\nCallavgPrice:", avgPrice);
+    
+        const getStrikePricesResult = await zopnftFactory.getStrikePrices(avgPrice, range, base);
+        var strikePrices = getStrikePricesResult.strikePrices;
+    
+    
+        for (let i = 0; i < getStrikePricesResult.index; i++) {
+            var singleOption ={};
+
+            const strikePrice = (strikePrices[i]).toString(10);
+            console.log("strikePriceCall: ", strikePrice);
+
+            const buyPrice = (await zopnftFactory.getBuyPrice(isPut, avgPrice, strikePrice, base) / 10).toString(10);
+            console.log("buyPrice: ", buyPrice);
+            
+            singleOption["expiryday"] = todayDate;
+            singleOption["strikePrice"] = buyPrice;
+            singleOption["buyPrice10x"] = strikePrice;
+            singleOption["buyPrice"] = buyPrice;
+            zoptions.push(singleOption);
+        }
+        //console.log("####options.length: ", zoptions.length);
+    }
+
+    useEffect(() => {
+        fetchProducts();
+    }, []);
+
+    async function _mint_buyOP(amount, price) {
         try {
-            console.log("1!!");
+            
             const [ethSelectedAddress] = await window.ethereum.enable();
-            console.log("2!!:", ethSelectedAddress);
+            
             //this.setselectedAddress(ethSelectedAddress);
-            console.log("3!!");
+            
             // We first initialize ethers by creating a provider using window.ethereum
             const provider = new ethers.providers.Web3Provider(window.ethereum);
 
-            console.log("4!!: ", provider);
+            
             // this.web3 = new Web3(this._provider);
             const zopnftFactory = new ethers.Contract(ZOPNFTFactoryAddr,ZOPNFTFactoryIF.abi,provider.getSigner(0));
-            console.log("5!!: ", zopnftFactory);
+            
             //let tx = await zopnftFactory.buyOP(20220227, 0, 121, ethSelectedAddress, 5);
             //let options_token_addr = await zopnftFactory.expiryToZNtoken(20220227, 121);
             //console.log("ZNtoken-0-20220227-121 addr: ", options_token_addr);
+            console.log("!!!!!!!!!!!!ZNtoken-",todayDate, "-", isPut,"-", price," addr: ", ethSelectedAddress, "amount:", amount);
+            let tx = await zopnftFactory.buyOP(todayDate, isPut, price, ethSelectedAddress, amount);
+            //let tx = await zopnftFactory.buyOP(20220228, isPut, 120, ethSelectedAddress, amount);
+            
+            let options_token_addr = await zopnftFactory.expiryToZNtoken(todayDate, isPut, price);
+            console.log("ZNtoken-",todayDate, "-", isPut,"-",price," addr: ", options_token_addr);
 
-            let tx = await zopnftFactory.buyOP(date, optype, price, ethSelectedAddress, amount);
-            let options_token_addr = await zopnftFactory.expiryToZNtoken(date, optype, price);
-            console.log("ZNtoken-",date, "-", optype,"-",price," addr: ", options_token_addr);
 
-
-            //let tx = await zopnftFactory.buyOP(date, price, amount)
-            //console.log("6");
+            //let tx = await zopnftFactory.buyOP(todayDate, price, amount)
+            
             //console.log("transaction sent to mint buyOP: ", 20220227, 121, ethSelectedAddress, 5);
-            console.log("transaction sent to mint buyOP: ", date, optype, price, amount);
+            console.log("transaction sent to mint buyOP: ", todayDate, isPut, price, amount);
             setState({ txBeingSent: tx.hash });
             console.log("[buyOP] tx.hash: ", tx.hash)
             let receipt = await tx.wait()
@@ -130,29 +147,24 @@ function TopCollection_call() {
         }
     }
 
-    function myFunction() {
-        var x = document.getElementById("amountInput");
-        x.value = x.value;
-    }
-
     return (
         <>
+
             {zoptions.map((item, i) => (
-                <form onSubmit={(event) => {
-                    console.log("##", "form");
+                <form
+                    onSubmit={(event) => {
+                        // This function just calls the transferTokens callback with the
+                        // form's data.
                         event.preventDefault();
                         const formData = new FormData(event.target);
-                        const date = formData.get("expiryDay");
-                        const optype = false;
-                        const price = formData.get("strikePrice");
                         const amount = formData.get("amount");
-                        //date, price, amount
-                        if (date || price || amount) {
-                            console.log("##", date, optype, price, amount);
-                            _mint_buyOP(date, optype, price, amount);
+                        //amount
+                        if (amount) {
+
+                            _mint_buyOP(amount, item.buyPrice10x);
                         }
                     }}
-                >
+                    className="buyOP">
                 <div className="col-xl-12 col-sm-12 col-md-12">
                         <div className="top-collection-content d-block">
                             <div className="d-flex align-items-center">
@@ -164,19 +176,13 @@ function TopCollection_call() {
                                         {item.buyPrice}
                                     </p>
                                 </div>
-                                <input id="expiryDay" name="expiryDay" type="hidden" value={item.expiryday}></input>
-                                <input id="strikePrice" name="strikePrice" type="hidden" value={item.strikePrice*10} ></input>
-                                
-                                <div class="col-sm-4 col-sm-offset-4">
-                                    <span>expiryday {item.expiryday} </span>
-                                </div>
-                                
+                                <span>{item.expiryday}-{item.buyPrice10x/10} <img src="/images/svg/eth.svg" alt="" width={10} className="me-2" /></span>
                                 <div class="col-sm-4 col-sm-offset-4">
                                 <label for="basic-url" class="form-label">amount</label>
                                     <div class="input-group mb-3">
-                                        <input type="number" id="amountInput" name="amount" onKeyUp={myFunction} class="form-control" size="10" aria-label="amount" aria-describedby="basic-addon2"/>
+                                        <input type="number" onkeyup="this.value=this.value.replace(/\D/g,'')" class="form-control" size="10" aria-label="amount" aria-describedby="basic-addon2" name="amount"/>
                                         <div class="input-group-append">
-                                            <button class="btn btn-outline-secondary"  type="submit">BUY</button>
+                                            <button class="btn btn-outline-secondary" type="button" type="submit">BUY</button>
                                         </div>
                                     </div>
                                 </div>

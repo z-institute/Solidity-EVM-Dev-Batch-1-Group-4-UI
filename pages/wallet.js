@@ -99,7 +99,7 @@ function Balance({ investmentData }) {
                 singlePut["opAddress"] = tokenAddressPut;
                 tansactionHistory.push(singlePut);
             }
-            // console.log("1122!!", tansactionHistory.length);
+            console.log("...");
         }
         // console.log("end", tansactionHistory.length);
         setTansactionHistory([...tansactionHistory]);
@@ -181,7 +181,7 @@ function Balance({ investmentData }) {
                                         }
                                     }}
                                     key = {i}>
-                            <div className="d-flex justify-content-between creator-widget active  align-items-center">
+                            <div style={{ zIndex: '1'}}  className="d-flex justify-content-between creator-widget active  align-items-center">
                                 <div className="d-flex align-items-center">
                                     <div className="top-creators-info">
                                         <h5 className="mb-0">{item.opName}</h5>

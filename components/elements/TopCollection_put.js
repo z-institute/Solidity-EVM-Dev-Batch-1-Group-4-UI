@@ -134,7 +134,7 @@ function TopCollection_put() {
                         }
                     }}
                     key = {i}>
-                    <div className="col-xl-12 col-sm-12 col-md-12">
+                    <div style={{ zIndex: '1'}} className="col-xl-12 col-sm-12 col-md-12">
                         <div className="top-collection-content d-block">
                             <div className="d-flex align-items-center">
                                 <span className="serial">{underlyingAsset} </span>

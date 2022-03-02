@@ -16,11 +16,12 @@ let underlyingAsset = "azuki";
 const ZOPNFTFactoryAddr = contractAddress.ZOPNFTFactory;
 
 let isPut = true;
-let options = [];
+// let options = [];
 let BasePrice = 0;
 
 function TopCollection_put() {
     const [open, setOpen] = useState("p1");
+    const [options, setOptions] = useState([]);
 
     const initialState = {
         // The info of the token (i.e. It's Name and symbol)
@@ -67,6 +68,7 @@ function TopCollection_put() {
             options.push(singleOption);
         }
         //console.log("####options.length: ", options.length);
+        setOptions(...[options]);
     }
 
     useEffect(() => {
@@ -85,12 +87,12 @@ function TopCollection_put() {
             // this.web3 = new Web3(this._provider);
             const zopnftFactory = new ethers.Contract(ZOPNFTFactoryAddr,ZOPNFTFactoryIF.abi,provider.getSigner(0));
             
-            console.log("!!!!!!!!!!!!ZNtoken-",todayDate, "-", isPut,"-", price," addr: ", ethSelectedAddress, "amount:", amount);
+            // console.log("!!!!!!!!!!!!ZNtoken-",todayDate, "-", isPut,"-", price," addr: ", ethSelectedAddress, "amount:", amount);
             let tx = await zopnftFactory.buyOP(todayDate, isPut, price, ethSelectedAddress, amount, {value: ethers.utils.parseEther((buyPrice*amount*0.01).toString(10))});
             //let tx = await zopnftFactory.buyOP(20220228, isPut, 120, ethSelectedAddress, amount);
             
             let options_token_addr = await zopnftFactory.expiryToZNtoken(todayDate, isPut, price);
-            console.log("ZNtoken-",todayDate, "-", isPut,"-",price," addr: ", options_token_addr);
+            // console.log("ZNtoken-",todayDate, "-", isPut,"-",price," addr: ", options_token_addr);
 
             //console.log("transaction sent to mint buyOP: ", 20220227, 121, ethSelectedAddress, 5);
             console.log("transaction sent to mint buyOP: ", todayDate, isPut, price, amount);
@@ -112,6 +114,12 @@ function TopCollection_put() {
             setState({ txBeingSent: undefined });
         }
     }
+
+    function myFunction() {
+        var x = document.getElementById("amountInput");
+        x.value = x.value;
+    }
+
     return (
         <>  
             {options.map((item, i) => (
@@ -140,9 +148,9 @@ function TopCollection_put() {
                                 <span>{item.expiryday}</span>
                                 <input id="strikePrice" name="strikePrice" type="hidden" value={item.strikePrice*10} ></input>
                                 <div class="col-sm-4 col-sm-offset-4">
-                                <label for="basic-url" class="form-label">amount</label>
+                                <label htmlFor="basic-url" class="form-label">amount</label>
                                     <div class="input-group mb-3">
-                                        <input type="number" onkeyup="this.value=this.value.replace(/\D/g,'')"
+                                        <input type="number" onKeyUp={myFunction} id="amountInput" 
                                                className="form-control" size="10" aria-label="amount"
                                                aria-describedby="basic-addon2" name="amount"/>
                                         <div class="input-group-append">

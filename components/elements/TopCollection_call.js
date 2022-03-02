@@ -16,11 +16,12 @@ let underlyingAsset = "azuki";
 const ZOPNFTFactoryAddr = contractAddress.ZOPNFTFactory;
 
 let isPut = false;
-let zoptions = [];
+// let zoptions = [];
 let BasePrice = 0;
 
 function TopCollection_call() {
     const [open, setOpen] = useState("p1");
+    const [zoptions, setZoptions] = useState([]);
 
     const initialState = {
         // The info of the token (i.e. It's Name and symbol)
@@ -67,6 +68,7 @@ function TopCollection_call() {
             zoptions.push(singleOption);
         }
         //console.log("####options.length: ", zoptions.length);
+        setZoptions([...zoptions]);
     }
 
     useEffect(() => {
@@ -82,11 +84,11 @@ function TopCollection_call() {
 
             const zopnftFactory = new ethers.Contract(ZOPNFTFactoryAddr,ZOPNFTFactoryIF.abi,provider.getSigner(0));
 
-            console.log("!!!!!!!!!!!!ZNtoken-",todayDate, "-", isPut,"-", price," addr: ", ethSelectedAddress, "amount:", amount);
+            // console.log("!!!!!!!!!!!!ZNtoken-",todayDate, "-", isPut,"-", price," addr: ", ethSelectedAddress, "amount:", amount);
             let tx = await zopnftFactory.buyOP(todayDate, isPut, price, ethSelectedAddress, amount, {value: ethers.utils.parseEther((buyPrice*amount*0.01).toString(10))});
             
             let options_token_addr = await zopnftFactory.expiryToZNtoken(todayDate, isPut, price);
-            console.log("ZNtoken-",todayDate, "-", isPut,"-",price," addr: ", options_token_addr);
+            // console.log("ZNtoken-",todayDate, "-", isPut,"-",price," addr: ", options_token_addr);
 
             console.log("transaction sent to mint buyOP: ", todayDate, isPut, price, amount);
             setState({ txBeingSent: tx.hash });
@@ -105,6 +107,11 @@ function TopCollection_call() {
         } finally {
             setState({ txBeingSent: undefined });
         }
+    }
+
+    function myFunction() {
+        var x = document.getElementById("amountInput");
+        x.value = x.value;
     }
 
     return (
@@ -134,12 +141,12 @@ function TopCollection_call() {
                                 </div>
                                 <span>{item.expiryday}</span>
                                 <input id="strikePrice" name="strikePrice" type="hidden" value={item.strikePrice*10} ></input>
-                                <div class="col-sm-4 col-sm-offset-4">
-                                <label for="basic-url" class="form-label">amount</label>
-                                    <div class="input-group mb-3">
-                                        <input type="number" onkeyup="this.value=this.value.replace(/\D/g,'')" class="form-control" size="10" aria-label="amount" aria-describedby="basic-addon2" name="amount"/>
-                                        <div class="input-group-append">
-                                            <button class="btn btn-outline-secondary" type="button" type="submit">BUY</button>
+                                <div className="col-sm-4 col-sm-offset-4">
+                                <label htmlFor="basic-url" className="form-label">amount</label>
+                                    <div className="input-group mb-3">
+                                        <input type="number" id="amountInput" onKeyUp={myFunction} className="form-control" size="10" aria-label="amount" aria-describedby="basic-addon2" name="amount"/>
+                                        <div className="input-group-append">
+                                            <button className="btn btn-outline-secondary" type="button" type="submit">BUY</button>
                                         </div>
                                     </div>
                                 </div>

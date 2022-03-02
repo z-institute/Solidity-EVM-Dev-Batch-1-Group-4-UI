@@ -23,8 +23,7 @@ const title = "Wallet";
 
 function Balance({ investmentData }) {
     const [open, setOpen] = useState("a1");
-
-    let tansactionHistory = [];
+    const [tansactionHistory, setTansactionHistory] = useState([]);
 
     const fetchProducts = async () => {
 
@@ -38,9 +37,9 @@ function Balance({ investmentData }) {
         //console.log("[TOP]:  5!!: ", zopnftFactory);
 
         const avgPrice = (await zopnftFactory.expiryDayToPrice(day)).toString(10);
-        const avgPrice_real = (avgPrice / 10).toString(10);
-        console.log("\navgPrice:", avgPrice);
-        console.log("\navgPrice_real:", avgPrice_real);
+        // const avgPrice_real = (avgPrice / 10).toString(10);
+        // console.log("\navgPrice:", avgPrice);
+        // console.log("\navgPrice_real:", avgPrice_real);
 
         const getStrikePricesResult = await zopnftFactory.getStrikePrices(avgPrice, range, base);
         // console.log(getStrikePricesResult.strikePrices);
@@ -61,7 +60,6 @@ function Balance({ investmentData }) {
             if (balanceCall > 0) {
                 var singleCall= {};
                 let balanceCall_str = balanceCall.toString(10);
-                // console.log("#nameCall: ", nameCall);
                 // console.log("tokenAddress:%s,isCall,strikePrice:%s,balance:%s", tokenAddressCall, strikePrices_str, balanceCall_str);
                 singleCall["opName"] = nameCall;
                 singleCall["opAmount"] = balanceCall_str;
@@ -69,8 +67,6 @@ function Balance({ investmentData }) {
                 singleCall["opType"] = "Call";
                 singleCall["opAddress"] = tokenAddressCall;
                 tansactionHistory.push(singleCall);
-                // console.log("####", singleCall.opAmount);
-                // console.log("####", singleCall.opAddress);
             }
             //PUT
             const tokenAddressPut = await zopnftFactory.getTokenAddress(exriryDay, isPut, strikePrices[i]);
@@ -80,26 +76,17 @@ function Balance({ investmentData }) {
             if (balancePut > 0) {
                 var singlePut = {};
                 let balancePut_str = balancePut.toString(10);
-                // console.log("#namePut: ", namePut);
                 // console.log("tokenAddressPut:%s,isPut,strikePrice:%s,balance:%s", tokenAddressPut, strikePrices_str, balancePut_str);
-                
                 singlePut["opName"] = namePut;
                 singlePut["opAmount"] = balancePut_str;
                 singlePut["opStrikePrice"] = strikePrices_str;
                 singlePut["opType"] = "Put";
                 singlePut["opAddress"] = tokenAddressPut;
                 tansactionHistory.push(singlePut);
-
-                // console.log("####", singlePut.opAmount);
-                // console.log("####", singlePut.opAddress);
             }
-            
         }
-        console.log("end", tansactionHistory.length);
-
-        for(let j =0; j<tansactionHistory.length ; j++){
-            console.log(tansactionHistory[j]);
-        }
+        // console.log("end", tansactionHistory.length);
+        setTansactionHistory([...tansactionHistory]);
     };
 
     useEffect(() => {
@@ -118,7 +105,7 @@ function Balance({ investmentData }) {
                 child={title}
             >
                 <div className="row">
-                    <div className="col-xxl-6 col-xl-6 col-lg-6">
+                    <div className="col-xxl-12 col-xl-12 col-lg-12">
                         <div className="card-header px-0 pt-0">
                             <h4 className="card-title">Latest Transaction</h4>
                         </div>
@@ -127,31 +114,20 @@ function Balance({ investmentData }) {
                             {tansactionHistory.map((item, i) => (
                             <div className="d-flex justify-content-between creator-widget active  align-items-center">
                                 <div className="d-flex align-items-center">
-                                    <div className="top-creators-user-img me-3">
-                                        <img src="/images/items/item_1.png" alt="" width="60" />
-                                    </div>
                                     <div className="top-creators-info">
-                                        {/* <h5 className="mb-0">{item.opName} {item.opStrikePrice}</h5>
-                                        <p className="mb-2">{item.opAddress}</p> */}
-                                        {i}
+                                        <h5 className="mb-0">{item.opName}</h5>
+                                        <h5 className="mb-0">{item.opType}</h5>
+                                        <h5 className="mb-0">{item.opStrikePrice}</h5>
+                                        <p className="mb-2">{item.opAddress}</p>
                                     </div>
                                 </div>
                                 <div className="text-end">
-                                    {/* <h5 className="text-primary">"{item.opAmount}" Unit</h5> */}
-                                    <h5 className="text-primary"> Unit</h5>
+                                    <h5 className="text-primary">{item.opAmount} Unit</h5>
                                 </div>
                             </div>
                             ))}
                         </div>
                     </div>
-                    {/* <div className="col-xxl-6 col-xl-6 col-lg-6">
-                        <h4 className="card-title mb-3">Balance Details</h4>
-                        <div className="card">
-                            <div className="card-body">
-                                <BalanceDetails />
-                            </div>
-                        </div>
-                    </div> */}
                 </div>
             </LayoutAdmin>
         </>

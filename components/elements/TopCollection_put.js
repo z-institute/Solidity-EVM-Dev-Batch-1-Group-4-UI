@@ -16,12 +16,12 @@ let underlyingAsset = "azuki";
 const ZOPNFTFactoryAddr = contractAddress.ZOPNFTFactory;
 
 let isPut = true;
-// let options = [];
+let options = [];
 let BasePrice = 0;
 
 function TopCollection_put() {
     const [open, setOpen] = useState("p1");
-    const [options, setOptions] = useState([]);
+    // const [options, setOptions] = useState([]);
 
     const initialState = {
         // The info of the token (i.e. It's Name and symbol)
@@ -68,7 +68,7 @@ function TopCollection_put() {
             options.push(singleOption);
         }
         //console.log("####options.length: ", options.length);
-        setOptions(...[options]);
+        // setOptions(...[options]);
     }
 
     useEffect(() => {
@@ -145,16 +145,18 @@ function TopCollection_put() {
                                         {item.buyPrice}
                                     </p>
                                 </div>
-                                <span>{item.expiryday}</span>
+                                <div className="col-sm-4 col-sm-offset-4">
+                                    <span>{item.expiryday}</span>
+                                </div>
                                 <input id="strikePrice" name="strikePrice" type="hidden" value={item.strikePrice*10} ></input>
-                                <div class="col-sm-4 col-sm-offset-4">
-                                <label htmlFor="basic-url" class="form-label">amount</label>
-                                    <div class="input-group mb-3">
+                                <div className="col-sm-4 col-sm-offset-4">
+                                <label htmlFor="basic-url" className="form-label">amount</label>
+                                    <div className="input-group mb-3">
                                         <input type="number" onKeyUp={myFunction} id="amountInput" 
                                                className="form-control" size="10" aria-label="amount"
                                                aria-describedby="basic-addon2" name="amount"/>
-                                        <div class="input-group-append">
-                                            <button class="btn btn-outline-secondary" type="button" type="submit">BUY</button>
+                                        <div className="input-group-append">
+                                            <button className="btn btn-outline-secondary" type="button" type="submit">BUY</button>
                                         </div>
                                     </div>
                                 </div>

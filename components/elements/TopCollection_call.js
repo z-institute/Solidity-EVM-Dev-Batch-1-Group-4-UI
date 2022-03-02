@@ -16,12 +16,12 @@ let underlyingAsset = "azuki";
 const ZOPNFTFactoryAddr = contractAddress.ZOPNFTFactory;
 
 let isPut = false;
-// let zoptions = [];
+let zoptions = [];
 let BasePrice = 0;
 
 function TopCollection_call() {
     const [open, setOpen] = useState("p1");
-    const [zoptions, setZoptions] = useState([]);
+    // const [zoptions, setZoptions] = useState([]);
 
     const initialState = {
         // The info of the token (i.e. It's Name and symbol)
@@ -65,10 +65,11 @@ function TopCollection_call() {
             singleOption["expiryday"] = todayDate;
             singleOption["strikePrice"] = strikePrice/10;
             singleOption["buyPrice"] = buyPrice;
+            singleOption["key"] = "P"+strikePrice;
             zoptions.push(singleOption);
         }
         //console.log("####options.length: ", zoptions.length);
-        setZoptions([...zoptions]);
+        // setZoptions([...zoptions]);
     }
 
     useEffect(() => {
@@ -127,7 +128,7 @@ function TopCollection_call() {
                             _mint_buyOP(amount, price, item.buyPrice);
                         }
                     }}
-                >
+                key = {i}>
                 <div className="col-xl-12 col-sm-12 col-md-12">
                         <div className="top-collection-content d-block">
                             <div className="d-flex align-items-center">
@@ -139,7 +140,9 @@ function TopCollection_call() {
                                         {item.buyPrice}
                                     </p>
                                 </div>
-                                <span>{item.expiryday}</span>
+                                <div className="col-sm-4 col-sm-offset-4">
+                                    <span>{item.expiryday}</span>
+                                </div>
                                 <input id="strikePrice" name="strikePrice" type="hidden" value={item.strikePrice*10} ></input>
                                 <div className="col-sm-4 col-sm-offset-4">
                                 <label htmlFor="basic-url" className="form-label">amount</label>

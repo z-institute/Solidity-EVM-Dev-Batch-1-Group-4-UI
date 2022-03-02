@@ -1,23 +1,21 @@
 import React, { useState } from "react";
-import BrowseCategory from "../components/elements/BrowseCategory";
+// import BrowseCategory from "../components/elements/BrowseCategory";
 import TopCollection_call from "../components/elements/TopCollection_call";
 import TopCollection_put from "../components/elements/TopCollection_put";
 import LayoutFront from "../components/layout/LayoutFront";
 import "react-modal-video/css/modal-video.css";
-import dynamic from "next/dynamic";
+// import dynamic from "next/dynamic";
 
-import Link from "next/link";
+// import Link from "next/link";
 import IntroSlider from "../components/slider/IntroSlider";
-import NotableDrops from "../components/slider/NotableDrops";
-import TrendingSlider from "../components/slider/Trending";
+// import NotableDrops from "../components/slider/NotableDrops";
+// import TrendingSlider from "../components/slider/Trending";
 
-const ModalVideo = dynamic(import("react-modal-video"), {
-    ssr: false,
-});
-
-//import React from "react";
-import ReactDOM from "react-dom";
-import { Dapp } from "../src/components/Dapp";
+// const ModalVideo = dynamic(import("react-modal-video"), {
+//     ssr: false,
+// });
+// import ReactDOM from "react-dom";
+// import { Dapp } from "../src/components/Dapp";
 
 // We import bootstrap here, but you can remove if you want
 import "bootstrap/dist/css/bootstrap.css";
@@ -91,10 +89,10 @@ const Index = () => {
                         </div>
                     </div>    
                     <div className="container-column2">    
-                        <div className="align-items-center row">
+                        <div className="align-items-end row">
                             <TopCollection_call />
                         </div>
-                        <div className="align-items-center row">
+                        <div className="align-items-end row">
                             <TopCollection_put />
                         </div>
                     </div>

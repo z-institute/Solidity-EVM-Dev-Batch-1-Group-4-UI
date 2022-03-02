@@ -54,13 +54,11 @@ function Balance({ investmentData }) {
         //console.log("[TOP]:  5!!: ", zopnftFactory);
 
         const avgPrice = (await zopnftFactory.expiryDayToPrice(day)).toString(10);
-        // const avgPrice_real = (avgPrice / 10).toString(10);
         // console.log("\navgPrice:", avgPrice);
-        // console.log("\navgPrice_real:", avgPrice_real);
 
         const getStrikePricesResult = await zopnftFactory.getStrikePrices(avgPrice, range, base);
-        // console.log(getStrikePricesResult.strikePrices);
-        // console.log("\nindex:", getStrikePricesResult.index);
+        // console.log(getStrikePricesResult.strikePrices, getStrikePricesResult.index);
+        
         let strikePrices = getStrikePricesResult.strikePrices;
 
         var exriryDay = day + 2;
@@ -101,7 +99,7 @@ function Balance({ investmentData }) {
                 singlePut["opAddress"] = tokenAddressPut;
                 tansactionHistory.push(singlePut);
             }
-            console.log("1122!!", tansactionHistory.length);
+            // console.log("1122!!", tansactionHistory.length);
         }
         // console.log("end", tansactionHistory.length);
         setTansactionHistory([...tansactionHistory]);
@@ -178,8 +176,8 @@ function Balance({ investmentData }) {
                                         const formData = new FormData(event.target);
                                         const amount = formData.get("amount");
                                         if (amount) {
-                                            console.log("_getReward: ", item.opType, item.opStrikePrice*10 , amount);
-                                            _getReward(item.opType, item.opStrikePrice*10 , amount);
+                                            console.log("_getReward: ", item.opType, item.opStrikePrice*10, amount);
+                                            _getReward(item.opType, item.opStrikePrice*10, amount);
                                         }
                                     }}
                                     key = {i}>
@@ -193,11 +191,11 @@ function Balance({ investmentData }) {
                                     </div>
                                 </div>
                                 <div className="text-end">
-                                    <h5 className="text-primary">{item.opAmount} Unit</h5>
+                                    <h5 className="text-primary">{item.opAmount} ZOPT</h5>
                                     <div className="input-group mb-3">
                                         <input type="number" id="amountInput" onKeyUp={myFunction} className="form-control" size="10" aria-label="amount" aria-describedby="basic-addon2" name="amount"/>
                                         <div className="input-group-append">
-                                            <button className="btn btn-outline-secondary" type="button" type="submit">BUY</button>
+                                            <button className="btn btn-outline-danger" id="button-addon2" type="submit">Liquidate</button>
                                         </div>
                                     </div>
                                 </div>

@@ -16,12 +16,12 @@ let underlyingAsset = "azuki";
 const ZOPNFTFactoryAddr = contractAddress.ZOPNFTFactory;
 
 let isPut = false;
-let zoptions = [];
+// let zoptions = [];
 let BasePrice = 0;
 
 function TopCollection_call() {
     const [open, setOpen] = useState("p1");
-    // const [zoptions, setZoptions] = useState([]);
+    const [zoptions, setZoptions] = useState([]);
 
     const initialState = {
         // The info of the token (i.e. It's Name and symbol)
@@ -69,7 +69,7 @@ function TopCollection_call() {
             zoptions.push(singleOption);
         }
         //console.log("####options.length: ", zoptions.length);
-        // setZoptions([...zoptions]);
+        setZoptions([...zoptions]);
     }
 
     useEffect(() => {
